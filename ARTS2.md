@@ -1,4 +1,4 @@
-#ARTS第二
+# ARTS第二
 ## Algorithm
 ####717. 1-bit and 2-bit Characters
 
@@ -100,7 +100,7 @@ public static boolean isOneBitCharacter(int[] bits) {
 
 关于在线教育是否有用的讨论
 ```https://medium.com/@derektng/what-if-online-education-simply-doesnt-work-there-s-evidence-it-may-not-302dc04c090```
-美国大学生1/3都参与了在线课程,在线课程的本意是公平，更便宜的让人们平等的受教育，然而在线教育是不是有效呢，这个文章给出的数据不是肯定的回答
+美国大学生1/3都参与了在线课程,在线课程的本意是公平，更便宜的让人们平等的受教育，然而在线教育是不是有效呢，这个文章给出的数据不是肯定的回答，在线教育多是商业目的学校采用，课程收费也不少，课程的效果也没有比得上传统教学方式，找工作，在线的学历也不太受认可。
 
 ### Tips
 
