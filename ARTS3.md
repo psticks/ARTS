@@ -1,4 +1,4 @@
-##ARTS第三
+## ARTS第三
 ### Algorithm
 283. Move Zeroes
 Given an array nums, write a function to move all 0's to the end of it while maintaining the relative order of the non-zero elements.
@@ -47,9 +47,14 @@ class Solution {
 ### Tip
 有时候代码能验证证书链，而浏览器认为不安全，这是JDK证书列表和浏览器证书列表不同个缘故，学习了一个判断根证书是否在JDK受信任的根证书列表里的方法：
 
-1.打开证书————详细信息————所有————指纹，把下面的字符串复制出来；
+1.找到根证书打开证书——详细信息——所有——指纹，把下面的字符串复制出来；
+例如github的证书指纹是`‎ca 06 f5 6b 25 8b 7a 0d 4f 2b 05 47 09 39 47 86 51 15 19 84`
 
 2.找到你的JDK的keytool工具，`keytool -list -keystore #JAVA_HOME/jre/lib/security/cacerts -storepass changeit`
 windows下改下JDK
 
 3.把2中证书列表复制出来和1对比。注意有大小写和分隔符的不同。
+
+### Share
+分享一个[java高阶概念扫盲](https://github.com/doocs/advanced-java),不仅介绍了概念，还从面试的角度提出问题，是一个实用性较强的扫盲贴集合，不过只是扫盲哦，干货不多，还需要好好的看书。
+
