@@ -1,0 +1,308 @@
+'''
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public class Deque<Item> implements Iterable<Item> {
+
+    private static class Node<Item> {
+        private Item value;
+
+        private Node<Item> next;
+
+        private Node<Item> last;
+    }
+
+    private Node<Item> head;
+
+    private Node<Item> tail;
+
+    private int number;
+
+    // construct an empty deque
+    public Deque() {
+        head = tail = null;
+        number = 0;
+    }
+
+    // is the deque empty?
+    public boolean isEmpty() {
+        return number == 0;
+    }
+
+    // return the number of items on the deque
+    public int size() {
+        return number;
+    }
+
+    // add the item to the front
+    public void addFirst(Item item) {
+        if (item == null)
+            throw new IllegalArgumentException();
+        // 空队列
+        if (head == null) {
+            head = new Node<>();
+            head.value = item;
+            tail = head;
+
+        }
+        else {
+            Node<Item> lastHead = head;
+            head = new Node<>();
+            head.value = item;
+            // 两个关系加上
+            head.next = lastHead;
+            lastHead.last = head;
+        }
+        number++;
+    }
+
+    // add the item to the back
+    public void addLast(Item item) {
+        if (item == null)
+            throw new IllegalArgumentException();
+        //空队列
+        if (tail == null) {
+            tail = new Node<>();
+            tail.value = item;
+            head = tail;
+        }
+        else {
+            Node<Item> lastTail = tail;
+            tail = new Node<>();
+            tail.value = item;
+            lastTail.next = tail;
+            tail.last = lastTail;
+        }
+        number++;
+    }
+
+    // remove and return the item from the front
+    public Item removeFirst() {
+        if (isEmpty())
+            throw new NoSuchElementException();
+        Node<Item> lastHead = head;
+        Item result = lastHead.value;
+        head = head.next;
+        // 本来只有一个node, 刪除之後成爲空隊列
+        if (head == null) {
+            tail = null;
+        }
+        else {
+            //  同时新的head的last也指向了null
+            head.last = null;
+        }
+        // 游离的node置为空，
+        lastHead = null;
+        number--;
+        return result;
+    }
+
+    // remove and return the item from the back
+    public Item removeLast() {
+        if (isEmpty())
+            throw new NoSuchElementException();
+        Node<Item> originalTail = tail;
+        Item value = originalTail.value;
+        tail = tail.last;
+        // 删除之后，成为空队列
+        if (tail == null) {
+            head = null;
+        }
+        else {
+            // 新的tail的next也指向了null
+            tail.next = null;
+        }
+        // 游离的node置为空回收内存
+        originalTail = null;
+        number--;
+        return value;
+    }
+
+    // return an iterator over items in order from front to back
+    public Iterator<Item> iterator() {
+        return new DequeIterator<>(head);
+    }
+
+    private static class DequeIterator<T> implements Iterator<T> {
+        private Node<T> current;
+
+        DequeIterator(Node<T> head) {
+            this.current = head;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public T next() {
+            if (!hasNext())
+                throw new NoSuchElementException();
+            T item = current.value;
+            current = current.next;
+            return item;
+        }
+    }
+
+    // unit testing (required)
+    public static void main(String[] args) {
+        Deque<Integer> integerDeque = new Deque<>();
+        System.out.println(integerDeque.isEmpty() ? "The deque is empty" : "The deque has item");
+        integerDeque.addFirst(2);
+        System.out.println(integerDeque.isEmpty() ? "The deque is empty" : "The deque has item");
+        integerDeque.addLast(3);
+        integerDeque.addFirst(1);
+        Iterator<Integer> iterator = integerDeque.iterator();
+        System.out.println(iterator.hasNext());
+        System.out.println("size is" + integerDeque.size());
+        System.out.println("remove last " + integerDeque.removeLast());
+        System.out.println("remove first " + integerDeque.removeFirst());
+        integerDeque.removeLast();
+        System.out.println(iterator.hasNext());
+        for (Integer integer : integerDeque)
+            System.out.println(integer);
+        System.out.println(integerDeque.size());
+    }
+}
+'''
+```
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public class RandomizedQueue<Item> implements Iterable<Item> {
+    private Item[] array;
+    private int number;
+
+    // construct an empty randomized queue
+    public RandomizedQueue() {
+        array = (Item[]) new Object[2];
+        number = 0;
+    }
+
+    // is the randomized queue empty?
+    public boolean isEmpty() {
+        return number == 0;
+    }
+
+    // return the number of items on the randomized queue
+    public int size() {
+        return number;
+    }
+
+    // add the item
+    public void enqueue(Item item) {
+        if (item == null)
+            throw new IllegalArgumentException();
+
+        if (number == array.length) resize(2 * array.length);
+        // add item in tail of quere
+        array[number++] = item;
+    }
+
+    // remove and return a random item
+    public Item dequeue() {
+        if (isEmpty())
+            throw new NoSuchElementException();
+        int idx = StdRandom.uniform(number);
+        // 一共number个数，0~number中随机选择一个
+        Item item = array[idx];
+        // 交换末尾的和idx位置的元素，末尾元素在enqeue的时候会被覆盖掉
+        array[idx] = array[number - 1];
+        array[number - 1] = null;
+
+        number--;
+        if (number != 0 && number == array.length / 4)
+            resize(array.length / 2);
+        return item;
+    }
+
+    private void resize(int capacity) {
+        Item[] temp = (Item[]) new Object[capacity];
+        for (int i = 0; i < number; i++) {
+            temp[i] = array[i];
+        }
+        array = temp;
+    }
+
+    // return a random item (but do not remove it)
+    public Item sample() {
+        if (isEmpty())
+            throw new NoSuchElementException();
+        int index = StdRandom.uniform(number);
+        // chose a node
+        Item result = array[index];
+
+        return result;
+    }
+
+    // return an independent iterator over items in random order
+    public Iterator<Item> iterator() {
+        return new RandomizedIterator<>();
+    }
+
+    private class RandomizedIterator<T> implements Iterator<T> {
+        private int i;
+        private T[] valueArray;
+
+        public RandomizedIterator() {
+            this.valueArray = (T[]) array.clone();
+            for (int j = 0; j < valueArray.length; j++) {
+                int r = StdRandom.uniform(i + 1);
+                T temp = valueArray[i];
+                valueArray[i] = valueArray[r];
+                valueArray[r] = temp;
+            }
+        }
+
+        public boolean hasNext() {
+            return i < number;
+        }
+
+        public T next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            return valueArray[i++];
+        }
+    }
+
+    // unit testing (required)
+    public static void main(String[] args) {
+        RandomizedQueue<Integer> queue = new RandomizedQueue<>();
+        System.out.println("queue is empty?" + queue.isEmpty());
+        queue.enqueue(0);
+        queue.enqueue(1);
+        queue.enqueue(2);
+        System.out.println(queue.sample());
+        System.out.println(queue.sample());
+        Iterator<Integer> iterator = queue.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+
+        System.out.println(queue.dequeue());
+        System.out.println(queue.dequeue());
+        System.out.println("size is " + queue.size());
+    }
+
+}
+```
+```
+/**
+ * 功能描述 take a int k para，read str，print k ，均匀分布
+ */
+public class Permutation {
+    public static void main(String[] args) {
+        if (args != null && args.length == 1) {
+            int k = Integer.parseInt(args[0]);
+            RandomizedQueue<String> queue = new RandomizedQueue<>();
+            while (StdIn.hasNextChar()) queue.enqueue(StdIn.readString());
+            for (int i = 0; i < k; i++) {
+                StdOut.println(queue.dequeue());
+            }
+        }
+        else throw new IllegalArgumentException();
+    }
+}
+```
