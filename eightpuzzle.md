@@ -108,6 +108,7 @@ public class Board {
                 stringBuilder.append(" ");
             }
             stringBuilder.append("\n");
+
         }
         return stringBuilder.toString();
     }
@@ -254,4 +255,5 @@ public class Board {
 
     }
 }
+
 
