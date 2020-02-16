@@ -43,7 +43,7 @@ public class KdTree {
         root = insert(root, p, 0, new RectHV(0, 0, 1, 1));
     }
 
-    public Node insert(Node x, Point2D p, int level, RectHV rectHV) {
+    private Node insert(Node x, Point2D p, int level, RectHV rectHV) {
         if (x == null) {
             x = new Node();
             x.point = p;
